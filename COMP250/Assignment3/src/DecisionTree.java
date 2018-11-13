@@ -91,9 +91,72 @@ public class DecisionTree implements Serializable {
 		{
 
 			//YOUR CODE HERE
+			
+			// check if object passed is of class DTNode
+			if(!(dt2 instanceof DTNode)) {
+				return false;
+			}
+			
+			DTNode dtree = (DTNode)dt2;		// dt2 is DTNode class, assign to variable dtree
+	
+			
+			// if all fields of both nodes are the same, they are the same node
+			// preorder traversal: travel left then check then travel right 
+			
+			// traverse left
+			if(this.left != null && dtree.left != null) {
+				// if both left child nodes are not null, call equals on left child nodes
+				return (this.left).equals(dtree.left);
+			} else if(this.left == null && dtree.left == null){
+				// If both left child nodes of the current node is null, we have reached our starting node
+				// finish if-else and proceed to evaluate
+				
+				// evaluation process
+				if(this.leaf == true && dtree.leaf == true) {
+					// if both nodes are leaf nodes, check labels
+					if(this.label == dtree.label) {
+						// proceed to right child node	
+					}
+					else {
+						return false;						
+					}
+				} else if(this.leaf == false && dtree.leaf == false) {
+					// if both nodes are not leaf nodes, check attributes
+					if(this.attribute == dtree.attribute && this.threshold == dtree.threshold) {
+						// proceed to right child node
+					} else {
+						// either attribute or threshold is not the same
+						return false;
+					}
+				} else {
+					// one is a leaf and one is not
+					return false;
+				}
+				
+				//move on to right child node
+				if(this.left != null && dtree.left != null) {
+					// presence of right child node
+					return (this.right).equals(dtree.right);
+				} else if(this.left == null && dtree.left == null) {
+					// no right nodes
+					// back to root node
+					return true;
+				} else {
+					// inconsistency in right child node
+					return false;
+				}
+				
+			} else {
+				// inconsistency between child nodes
+				// one tree has a child node (l or r) and the other tree doesn't 
+				return false;
+			}
 
-
-			return false;
+			
+			
+			
+			
+		// end of equals method
 		}
 	}
 
