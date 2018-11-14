@@ -49,6 +49,7 @@ public class DecisionTree implements Serializable {
 				for(Datum curData: datalist) {
 					if(prevLabel != curData.y) {
 						sameLabel = false;
+						break;
 					}
 				}
 				
@@ -64,7 +65,7 @@ public class DecisionTree implements Serializable {
 					// find a best split by testing out different splits and choosing the one with lowest entropy
 					double bestAvgS = Double.MAX_VALUE;		// best average entropy
 					int bestAttribute = -1;					// best attribute
-					int bestThreshold = -1;					// best threshold	
+					double bestThreshold = -1;					// best threshold	
 					
 					// for each attribute in datalist
 					for(int i = 0; i < datalist.get(0).x.length; i++) {
@@ -77,14 +78,18 @@ public class DecisionTree implements Serializable {
 							ArrayList<Datum> list2 = new ArrayList<Datum>();
 							
 							// perform split
-							for(int k = 0; k < j; k++) {
-								list1.add(datalist.get(k));
+							for(int k = 0; k < datalist.size(); k++) {
+								// split by comparing values of attributes
+								if(datalist.get(k).x[i] <= datalist.get(j).x[i]) {
+									// if the ith attribute of the kth datum is smaller than the ith attribute of the jth datum
+									// put in list 1
+									list1.add(datalist.get(k));
+								} else {
+									// put in list 2
+									list2.add(datalist.get(k));
+								}
 							}
-							// rest of datapoints in datalist
-							for(int k = j; k < datalist.size(); k++) {
-								list2.add(datalist.get(k));
-							}
-							
+								
 							// compute entropy for both splitted lists
 							double S1 = calcEntropy(list1);
 							double S2 = calcEntropy(list2);
@@ -95,30 +100,37 @@ public class DecisionTree implements Serializable {
 								// update best record
 								bestAvgS = curAvgS;
 								bestAttribute = i;
-								bestThreshold = j;
+								bestThreshold = datalist.get(j).x[i];
 							}
 						}
 					}
+					
 					// create a new node and return as root node
-					DTNode rootNode = new DTNode();
-					rootNode.attribute = bestAttribute;
-					rootNode.threshold = bestThreshold;
-					rootNode.leaf = false;		// with attribute and threshold this is not a root node
+					DTNode node = new DTNode();
+					
+					node.attribute = bestAttribute;
+					node.threshold = bestThreshold;
+					node.leaf = false;
 				
 					// create the child lists
-					ArrayList<Datum> data1 = new ArrayList<Datum>();
-					ArrayList<Datum> data2 = new ArrayList<Datum>();
-					for(int i = 0; i < bestThreshold; i++) {
-						data1.add(datalist.get(i));
-					}
-					for(int i = bestThreshold; i < datalist.size(); i++) {
-						data2.add(datalist.get(i));
-					}
-					// recursively call make decision tree on two splitted child datalists
-					rootNode.left = fillDTNode(data1);
-					rootNode.right = fillDTNode(data2);
+					ArrayList<Datum> bestList1 = new ArrayList<Datum>();
+					ArrayList<Datum> bestList2 = new ArrayList<Datum>();
 					
-					return rootNode;
+					// perform split with best attributes and threshold
+					// we know what attribute to use and what threshold of that attribute
+					for(int i = 0; i < datalist.size(); i++) {
+						if(datalist.get(i).x[bestAttribute] <= bestThreshold) {
+							bestList1.add(datalist.get(i));
+						} else {
+							bestList2.add(datalist.get(i));
+						}
+					}
+					
+					// recursively call make decision tree on two splitted child datalists
+					node.left = fillDTNode(bestList1);
+					node.right = fillDTNode(bestList2);
+					
+					return node;
 				}
 			} else {
 				// if datalist has size smaller than minSize then do not construct decision tree
@@ -285,7 +297,7 @@ public class DecisionTree implements Serializable {
 	}
 
 
-	// given a datapoint (without the label) calls the DTNode.classifyAtNode() on the rootnode of the calling DecisionTree object
+	// given a datapoint (without the label) calls the DTNode.classifyAtNode() on the this of the calling DecisionTree object
 	int classify(double[] xQuery ) {
 		DTNode node = this.rootDTNode;
 		return node.classifyAtNode( xQuery );

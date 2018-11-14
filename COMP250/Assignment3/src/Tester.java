@@ -130,10 +130,11 @@ public class Tester {
                     //create a decision tree based on the dataset
                     DecisionTree dt = new DecisionTree(dr.trainData , j);
                         //read corresponding serialized tree
-                        DecisionTree serdt = DataReader.readSerializedTree(filename);
-
+                    	DecisionTree serdt = DataReader.readSerializedTree(filename);
+                        
                         //compare the two trees
                         testpass = DecisionTree.equals(serdt,dt);
+                        
                     if (testpass)
                     {
                         if (verbose)
@@ -156,42 +157,42 @@ public class Tester {
         System.out.println("Number of tests passed :" + (total-counter) + " out of "+total+" tests." );
     }
      //if you want a more detailed test result change verbose to true
-//    public static void testClassify(boolean verbose)
-//    {
-//        int counter=0;
-//        int total = 0;
-//        DataReader dr = new DataReader();
-//        DecisionTree dt = null;
-//        try
-//        {
-//            //You can change the value of the database in the line below and try for different databases.
-//            String database = "data_minimal_overlap";
-//            //DataReader dr = new DataReader();
-//            dr.read_data(basedb+database+".csv");
-//            //*** DO NOT MAKE ANY CHANGES HERE ***//
-//            dr.splitTrainTestData(.5);
-//
-//
-//            dt = DataReader.readSerializedTree(base+database+"/thresh1.ser");
-//
-//        }catch (Exception e)
-//        {
-//            e.printStackTrace();
-//        }
-//        //Go through the
-//        for (int i = 1 ; i < dr.trainData.size() ; i++)
-//        {
-//            //classify and compare with the ground truth
-//            if (verbose)
-//                System.out.println( "Ground Truth : " + dr.trainData.get(i).y+". Your classification :" + dt.classify(dr.trainData.get(i).x));
-//            if (dr.trainData.get(i).y==dt.classify(dr.trainData.get(i).x))
-//            {
-//                counter++;
-//            }
-//            total++;
-//        }
-//        System.out.println("Number of correct outputs : " + counter + " out of " + total);
-//    }
+    public static void testClassify(boolean verbose)
+    {
+        int counter=0;
+        int total = 0;
+        DataReader dr = new DataReader();
+        DecisionTree dt = null;
+        try
+        {
+            //You can change the value of the database in the line below and try for different databases.
+            String database = "data_minimal_overlap";
+            //DataReader dr = new DataReader();
+            dr.read_data(basedb+database+".csv");
+            //*** DO NOT MAKE ANY CHANGES HERE ***//
+            dr.splitTrainTestData(.5);
+
+
+            dt = DataReader.readSerializedTree(base+database+"/thresh1.ser");
+
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        //Go through the
+        for (int i = 1 ; i < dr.trainData.size() ; i++)
+        {
+            //classify and compare with the ground truth
+            if (verbose)
+                System.out.println( "Ground Truth : " + dr.trainData.get(i).y+". Your classification :" + dt.classify(dr.trainData.get(i).x));
+            if (dr.trainData.get(i).y==dt.classify(dr.trainData.get(i).x))
+            {
+                counter++;
+            }
+            total++;
+        }
+        System.out.println("Number of correct outputs : " + counter + " out of " + total);
+    }
 
     public static void main(String args[])
     {
