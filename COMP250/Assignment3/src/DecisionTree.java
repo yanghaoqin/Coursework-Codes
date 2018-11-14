@@ -40,11 +40,6 @@ public class DecisionTree implements Serializable {
 		DTNode fillDTNode(ArrayList<Datum> datalist) {
 
 			//YOUR CODE HERE
-
-			// check whether ArrayList<Datum> is empty
-			if(datalist.size() == 0) {
-				return null;
-			}
 			
 			// check if dataset has at least minSizeDatalist items
 			if(datalist.size() >= minSizeDatalist) {
@@ -71,38 +66,64 @@ public class DecisionTree implements Serializable {
 					int bestAttribute = -1;					// best attribute
 					int bestThreshold = -1;					// best threshold	
 					
-					// for each attribute
+					// for each attribute in datalist
 					for(int i = 0; i < datalist.get(0).x.length; i++) {
-						// for each data point in the list
+						// for each Datum in datalist
 						for(int j = 0; j < datalist.size(); j++) {
-							// Split and compute avg entropy and find best avg entropy
+							// split and compute avg entropy and find best avg entropy
 							
-							// perform split
+							// initialize empty arraylists for split
 							ArrayList<Datum> list1 = new ArrayList<Datum>();
 							ArrayList<Datum> list2 = new ArrayList<Datum>();
 							
-							// Put 
+							// perform split
 							for(int k = 0; k < j; k++) {
 								list1.add(datalist.get(k));
 							}
+							// rest of datapoints in datalist
 							for(int k = j; k < datalist.size(); k++) {
 								list2.add(datalist.get(k));
 							}
 							
-							
-							
+							// compute entropy for both splitted lists
+							double S1 = calcEntropy(list1);
+							double S2 = calcEntropy(list2);
+							double curAvgS = ((double)list1.size())/((double)(list1.size()+list2.size()))*S1 + (1-((double)list1.size())/((double)(list1.size()+list2.size())))*S2;
+
+							// check if curAvgS is smaller than bestAvgS
+							if(curAvgS < bestAvgS) {
+								// update best record
+								bestAvgS = curAvgS;
+								bestAttribute = i;
+								bestThreshold = j;
+							}
 						}
 					}
+					// create a new node and return as root node
+					DTNode rootNode = new DTNode();
+					rootNode.attribute = bestAttribute;
+					rootNode.threshold = bestThreshold;
+					rootNode.leaf = false;		// with attribute and threshold this is not a root node
+				
+					// create the child lists
+					ArrayList<Datum> data1 = new ArrayList<Datum>();
+					ArrayList<Datum> data2 = new ArrayList<Datum>();
+					for(int i = 0; i < bestThreshold; i++) {
+						data1.add(datalist.get(i));
+					}
+					for(int i = bestThreshold; i < datalist.size(); i++) {
+						data2.add(datalist.get(i));
+					}
+					// recursively call make decision tree on two splitted child datalists
+					rootNode.left = fillDTNode(data1);
+					rootNode.right = fillDTNode(data2);
 					
-					
-					
-					
+					return rootNode;
 				}
-				
+			} else {
+				// if datalist has size smaller than minSize then do not construct decision tree
+				return this;
 			}
-			
-				
-			return this;
 		}
 
 
@@ -140,8 +161,22 @@ public class DecisionTree implements Serializable {
 		// returns its corresponding label, as determined by the decision tree
 		int classifyAtNode(double[] xQuery) {
 			//YOUR CODE HERE
-
-			return -1; //dummy code.  Update while completing the assignment.
+			
+			// check if node is leaf
+			if(rootDTNode.leaf == true) {
+				return rootDTNode.label;
+			} else {
+				// test the data point at the node
+				// test the bestAttribute since that is how we built the decision tree
+				// the threshold will be the determining value
+				if(xQuery[rootDTNode.attribute] <= rootDTNode.threshold) {
+					// proceed to left child node
+					return rootDTNode.left.classifyAtNode(xQuery);
+				} else {
+					// proceed to right child node
+					return rootDTNode.right.classifyAtNode(xQuery);
+				}
+			}
 		}
 
 
@@ -158,8 +193,7 @@ public class DecisionTree implements Serializable {
 			}
 			
 			DTNode dtree = (DTNode)dt2;		// dt2 is DTNode class, assign to variable dtree
-			
-			// if all fields of both nodes are the same, they are the same node
+			boolean tmp;
 			
 			// preorder traversal: root -> left -> right
 			// approach: whenever we encounter a false, the decision trees are different, exit all if-else statements and return false
@@ -192,7 +226,13 @@ public class DecisionTree implements Serializable {
 				// proceed to check for right child nodes
 			} else if(this.left != null && dtree.left != null) {
 				// if both have left child nodes, evaluate
-				return (this.left).equals(dtree.left);	
+				tmp = (this.left).equals(dtree.left);	
+				if(tmp) {
+					// if the left child nodes are equal check right child nodes
+				} else {
+					// if left child nodes not equal return false
+					return false;
+				}
 			} else {
 				// one has a left child node and the other doesn't
 				return false;
