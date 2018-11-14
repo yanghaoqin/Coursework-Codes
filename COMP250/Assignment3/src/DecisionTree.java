@@ -98,64 +98,58 @@ public class DecisionTree implements Serializable {
 			}
 			
 			DTNode dtree = (DTNode)dt2;		// dt2 is DTNode class, assign to variable dtree
-	
 			
 			// if all fields of both nodes are the same, they are the same node
-			// preorder traversal: travel left then check then travel right 
 			
-			// traverse left
-			if(this.left != null && dtree.left != null) {
-				// if both left child nodes are not null, call equals on left child nodes
-				return (this.left).equals(dtree.left);
-			} else if(this.left == null && dtree.left == null){
-				// If both left child nodes of the current node is null, we have reached our starting node
-				// finish if-else and proceed to evaluate
-				
-				// evaluation process
-				if(this.leaf == true && dtree.leaf == true) {
-					// if both nodes are leaf nodes, check labels
-					if(this.label == dtree.label) {
-						// proceed to right child node	
-					}
-					else {
-						return false;						
-					}
-				} else if(this.leaf == false && dtree.leaf == false) {
-					// if both nodes are not leaf nodes, check attributes
-					if(this.attribute == dtree.attribute && this.threshold == dtree.threshold) {
-						// proceed to right child node
-					} else {
-						// either attribute or threshold is not the same
-						return false;
-					}
+			// preorder traversal: root -> left -> right
+			// approach: whenever we encounter a false, the decision trees are different, exit all if-else statements and return false
+			// we first evaluate root node
+			if(this.leaf == true && dtree.leaf == true) {
+				// if both nodes are leaf nodes
+				// evaluate label
+				if(this.label == dtree.label) {
+					// both leaf nodes have same labels
+					// proceed to check child nodes
+				}
+			} else if (this.leaf == false && dtree.leaf == false) {
+				// if both nodes are not leaf
+				// evaluate attribute and threshold
+				if(this.attribute == dtree.attribute && this.threshold == dtree.threshold) {
+					// both attribute and threshold are same for both nodes
+					// proceed to check child nodes
 				} else {
-					// one is a leaf and one is not
+					// either attribute or threshold is inconsistent between nodes
 					return false;
 				}
-				
-				//move on to right child node
-				if(this.left != null && dtree.left != null) {
-					// presence of right child node
-					return (this.right).equals(dtree.right);
-				} else if(this.left == null && dtree.left == null) {
-					// no right nodes
-					// back to root node
-					return true;
-				} else {
-					// inconsistency in right child node
-					return false;
-				}
-				
 			} else {
-				// inconsistency between child nodes
-				// one tree has a child node (l or r) and the other tree doesn't 
+				// the two nodes have inconsistent types
 				return false;
 			}
-
 			
+			// check if left child node is present
+			if(this.left == null && dtree.left == null) {
+				// if both nodes don't have left child nodes
+				// proceed to check for right child nodes
+			} else if(this.left != null && dtree.left != null) {
+				// if both have left child nodes, evaluate
+				return (this.left).equals(dtree.left);	
+			} else {
+				// one has a left child node and the other doesn't
+				return false;
+			}
 			
-			
-			
+			// check if right child node is present
+			if(this.right == null && dtree.right == null) {
+				// if both nodes don't have right child nodes
+				// go back one level up
+				return true;
+			} else if(this.right != null && dtree.right != null) {
+				// if both have right child nodes, evaluate
+				return (this.right).equals(dtree.right);	
+			} else {
+				// one has a right child node and the other doesn't
+				return false;
+			}
 		// end of equals method
 		}
 	}
