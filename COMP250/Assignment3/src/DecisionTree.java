@@ -8,6 +8,8 @@ public class DecisionTree implements Serializable {
 	DTNode rootDTNode;
 	int minSizeDatalist; //minimum number of datapoints that should be present in the dataset so as to initiate a split
 	//Mention the serialVersionUID explicitly in order to avoid getting errors while deserializing.
+	int count = 0; //------------------------------------------------------------------------------------
+
 	public static final long serialVersionUID = 343L;
 	public DecisionTree(ArrayList<Datum> datalist , int min) {
 		minSizeDatalist = min;
@@ -21,8 +23,6 @@ public class DecisionTree implements Serializable {
 		int label = -1;      // only defined if node is a leaf
 		int attribute; // only defined if node is not a leaf
 		double threshold;  // only defined if node is not a leaf
-
-
 
 		DTNode left, right; //the left and right child of a particular node. (null if leaf)
 
@@ -80,7 +80,7 @@ public class DecisionTree implements Serializable {
 							// perform split
 							for(int k = 0; k < datalist.size(); k++) {
 								// split by comparing values of attributes
-								if(datalist.get(k).x[i] <= datalist.get(j).x[i]) {
+								if(datalist.get(k).x[i] < datalist.get(j).x[i]) {
 									// if the ith attribute of the kth datum is smaller than the ith attribute of the jth datum
 									// put in list 1
 									list1.add(datalist.get(k));
@@ -93,10 +93,10 @@ public class DecisionTree implements Serializable {
 							// compute entropy for both splitted lists
 							double S1 = calcEntropy(list1);
 							double S2 = calcEntropy(list2);
-							double curAvgS = ((double)list1.size())/((double)(list1.size()+list2.size()))*S1 + (1-((double)list1.size())/((double)(list1.size()+list2.size())))*S2;
+							double curAvgS = ((double)list1.size())/(list1.size()+list2.size())*S1 + (1.0-((double)list1.size())/(list1.size()+list2.size()))*S2;
 
 							// check if curAvgS is smaller than bestAvgS
-							if(curAvgS < bestAvgS) {
+							if(curAvgS < bestAvgS && bestAvgS - curAvgS > 0.000000000000001) {
 								// update best record
 								bestAvgS = curAvgS;
 								bestAttribute = i;
@@ -119,7 +119,7 @@ public class DecisionTree implements Serializable {
 					// perform split with best attributes and threshold
 					// we know what attribute to use and what threshold of that attribute
 					for(int i = 0; i < datalist.size(); i++) {
-						if(datalist.get(i).x[bestAttribute] <= bestThreshold) {
+						if(datalist.get(i).x[bestAttribute] < bestThreshold) {
 							bestList1.add(datalist.get(i));
 						} else {
 							bestList2.add(datalist.get(i));
@@ -206,7 +206,7 @@ public class DecisionTree implements Serializable {
 			
 			DTNode dtree = (DTNode)dt2;		// dt2 is DTNode class, assign to variable dtree
 			boolean tmp;
-			
+
 			// preorder traversal: root -> left -> right
 			// approach: whenever we encounter a false, the decision trees are different, exit all if-else statements and return false
 			// we first evaluate root node
@@ -238,6 +238,9 @@ public class DecisionTree implements Serializable {
 				// proceed to check for right child nodes
 			} else if(this.left != null && dtree.left != null) {
 				// if both have left child nodes, evaluate
+				
+				count++; //------------------------------------------------------------------------------------
+				
 				tmp = (this.left).equals(dtree.left);	
 				if(tmp) {
 					// if the left child nodes are equal check right child nodes
