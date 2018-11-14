@@ -40,6 +40,66 @@ public class DecisionTree implements Serializable {
 		DTNode fillDTNode(ArrayList<Datum> datalist) {
 
 			//YOUR CODE HERE
+
+			// check whether ArrayList<Datum> is empty
+			if(datalist.size() == 0) {
+				return null;
+			}
+			
+			// check if dataset has at least minSizeDatalist items
+			if(datalist.size() >= minSizeDatalist) {
+				// check if all items have same label
+				boolean sameLabel = true;
+				int prevLabel = datalist.get(0).y;		// set reference label for loop
+				for(Datum curData: datalist) {
+					if(prevLabel != curData.y) {
+						sameLabel = false;
+					}
+				}
+				
+				if(sameLabel == true) {
+					// all items have same label
+					// create leaf node with the label and return it
+					DTNode node = new DTNode();
+					node.label = prevLabel;
+					return node;
+				} else {
+					// items in datalist have different labels
+					
+					// find a best split by testing out different splits and choosing the one with lowest entropy
+					double bestAvgS = Double.MAX_VALUE;		// best average entropy
+					int bestAttribute = -1;					// best attribute
+					int bestThreshold = -1;					// best threshold	
+					
+					// for each attribute
+					for(int i = 0; i < datalist.get(0).x.length; i++) {
+						// for each data point in the list
+						for(int j = 0; j < datalist.size(); j++) {
+							// Split and compute avg entropy and find best avg entropy
+							
+							// perform split
+							ArrayList<Datum> list1 = new ArrayList<Datum>();
+							ArrayList<Datum> list2 = new ArrayList<Datum>();
+							
+							// Put 
+							for(int k = 0; k < j; k++) {
+								list1.add(datalist.get(k));
+							}
+							for(int k = j; k < datalist.size(); k++) {
+								list2.add(datalist.get(k));
+							}
+							
+							
+							
+						}
+					}
+					
+					
+					
+					
+				}
+				
+			}
 			
 				
 			return this;
