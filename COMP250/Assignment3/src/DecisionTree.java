@@ -1,3 +1,7 @@
+/**
+ * @author Raymond Yang
+ */
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.text.*;
@@ -45,7 +49,7 @@ public class DecisionTree implements Serializable {
 			if(datalist.size() >= minSizeDatalist) {
 				// check if all items have same label
 				boolean sameLabel = true;
-				int prevLabel = datalist.get(0).y;		// set reference label for loop
+				int prevLabel = datalist.get(0).y;		// set reference label for loop				
 				for(Datum curData: datalist) {
 					if(prevLabel != curData.y) {
 						sameLabel = false;
@@ -133,7 +137,10 @@ public class DecisionTree implements Serializable {
 				}
 			} else {
 				// if datalist has size smaller than minSize then do not construct decision tree
-				return this;
+				// find majority node
+				DTNode tmp = new DTNode();
+				tmp.label = this.findMajority(datalist);
+				return tmp;
 			}
 		}
 

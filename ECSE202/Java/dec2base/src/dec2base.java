@@ -1,5 +1,4 @@
 // Name: Raymond Haoqin Yang
-// Student ID: 260777792
 
 
 import acm.program.*;

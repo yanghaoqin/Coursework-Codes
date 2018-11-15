@@ -2,8 +2,6 @@
  * dec2base.c
  *
  * Name: Raymond Haoqin Yang
- * Student ID: 260777792
- *
  * Completed on: 2018/03/29
  */
 

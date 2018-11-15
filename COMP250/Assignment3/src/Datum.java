@@ -1,4 +1,3 @@
-
 //This class holds the information of a single datapoint
 
 public class Datum {

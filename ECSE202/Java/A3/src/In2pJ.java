@@ -1,4 +1,4 @@
-// Author: Raymond Haoqin Yang
+// Author: Raymond H. Yang
 
 import java.util.StringTokenizer;
 import acm.program.ConsoleProgram;

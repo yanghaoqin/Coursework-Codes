@@ -1,7 +1,6 @@
 /*
  * sortFile.c
  * Name: Raymond Haoqin Yang
- * Student ID: 260777792
  */
 
 /*

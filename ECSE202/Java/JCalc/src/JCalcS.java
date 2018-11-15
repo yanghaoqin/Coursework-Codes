@@ -1,6 +1,5 @@
 /**
- * @author Raymond Haoqin Yang
- * McGill ID: 260777792
+ * @author Raymond H. Yang
  * Date: 2018/03/16
  * OS: MacOS
  * Description: 
