@@ -91,12 +91,11 @@ public class DecisionTree implements Serializable {
 							}
 								
 							// compute entropy for both splitted lists
-							double S1 = calcEntropy(list1);
-							double S2 = calcEntropy(list2);
-							double curAvgS = ((double)list1.size())/(list1.size()+list2.size())*S1 + (1.0-((double)list1.size())/(list1.size()+list2.size()))*S2;
+							double curAvgS = ((double)list1.size())/(list1.size()+list2.size())*calcEntropy(list1) + ((double)list2.size())/(list1.size()+list2.size())*calcEntropy(list2);
 
 							// check if curAvgS is smaller than bestAvgS
-							if(curAvgS < bestAvgS && bestAvgS - curAvgS > 0.000000000000001) {
+							// adjustment for error
+							if(curAvgS < bestAvgS) {
 								// update best record
 								bestAvgS = curAvgS;
 								bestAttribute = i;
@@ -174,20 +173,17 @@ public class DecisionTree implements Serializable {
 		int classifyAtNode(double[] xQuery) {
 			//YOUR CODE HERE
 			
-			// check if node is leaf
-			if(rootDTNode.leaf == true) {
-				return rootDTNode.label;
+			// base case
+			if(this.leaf == true) {
+				return this.label;
+			}
+			
+			// input is datapoint with no label 
+			// classify with attribute and threshold
+			if(xQuery[this.attribute] < this.threshold) {
+				return this.left.classifyAtNode(xQuery);
 			} else {
-				// test the data point at the node
-				// test the bestAttribute since that is how we built the decision tree
-				// the threshold will be the determining value
-				if(xQuery[rootDTNode.attribute] <= rootDTNode.threshold) {
-					// proceed to left child node
-					return rootDTNode.left.classifyAtNode(xQuery);
-				} else {
-					// proceed to right child node
-					return rootDTNode.right.classifyAtNode(xQuery);
-				}
+				return this.right.classifyAtNode(xQuery);
 			}
 		}
 

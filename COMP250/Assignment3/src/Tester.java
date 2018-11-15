@@ -108,12 +108,12 @@ public class Tester {
         boolean testpass = true;
         int counter = 0;
         int total = 0;
-        for (int i=1;i<2;i++)
+        for (int i=0;i<datasets.length;i++)
         {
             //load the datasets
             DataReader dr = new DataReader();
             try {
-                dr.read_data(basedb + datasets[1] + ".csv");
+                dr.read_data(basedb + datasets[i] + ".csv");
             }catch (Exception e)
             {
                 e.printStackTrace();
@@ -121,8 +121,8 @@ public class Tester {
             //split the dataset into train and test set
             //**** DO NOT MAKE ANY CHANGES HERE *****//
             dr.splitTrainTestData(.5);
-            for (int j = 1 ; j < 2 ; j = j*2){
-                String filename = base+datasets[1]+"/thresh"+j+".ser";
+            for (int j = 1 ; j < dr.trainData.size() ; j = j*2){
+                String filename = base+datasets[i]+"/thresh"+j+".ser";
                 ArrayList<Datum> trainingData = new ArrayList<Datum>();
 
                 try{
@@ -194,15 +194,44 @@ public class Tester {
         System.out.println("Number of correct outputs : " + counter + " out of " + total);
     }
 
+    public static void testPerformance() {
+        String datasets[] = {"data_high_overlap", "data_partial_overlap", "data_minimal_overlap"};
+        for (int i = 0; i < datasets.length; i++) {
+            //load the datasets
+            DataReader dr = new DataReader();
+            try {
+                dr.read_data(basedb + datasets[i] + ".csv");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            dr.splitTrainTestData(.5);
+            System.out.println(datasets[i]);
+
+            for (int j = 1; j < dr.trainData.size(); j = j * 2) {
+
+                DecisionTree dt = new DecisionTree(dr.trainData, j);
+
+                System.out.printf(
+                        "minSizeDatalist : %d \t Training error : %s \t Test error : %s\n",
+                        j,
+                        dt.checkPerformance(dr.trainData),
+                        dt.checkPerformance(dr.testData)
+                );
+            }
+        }
+    }
+    
     public static void main(String args[])
     {
 
         //Testing the equals function
-//        testequals(true);
+        testequals(true);
 
         //if you want a more detailed test result change verbose to 'true'
-        testDecisionTree(true);
-//        testClassify(false);
+        testDecisionTree(false);
+        testClassify(false);
+        testPerformance();
     }
 
 }
