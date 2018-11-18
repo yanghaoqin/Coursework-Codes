@@ -12,7 +12,6 @@ public class DecisionTree implements Serializable {
 	DTNode rootDTNode;
 	int minSizeDatalist; //minimum number of datapoints that should be present in the dataset so as to initiate a split
 	//Mention the serialVersionUID explicitly in order to avoid getting errors while deserializing.
-	int count = 0; //------------------------------------------------------------------------------------
 
 	public static final long serialVersionUID = 343L;
 	public DecisionTree(ArrayList<Datum> datalist , int min) {
@@ -241,9 +240,6 @@ public class DecisionTree implements Serializable {
 				// proceed to check for right child nodes
 			} else if(this.left != null && dtree.left != null) {
 				// if both have left child nodes, evaluate
-				
-				count++; //------------------------------------------------------------------------------------
-				
 				tmp = (this.left).equals(dtree.left);	
 				if(tmp) {
 					// if the left child nodes are equal check right child nodes
