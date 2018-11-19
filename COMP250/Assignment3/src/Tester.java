@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 
+
 public class Tester {
 
 
@@ -13,15 +14,18 @@ public class Tester {
     {
         //Test 1
         boolean pass = true;
+        boolean [] checkFlag = new boolean[10];
         String filename1 = "data_high_overlap/thresh4.ser";
         String filename2 = "data_high_overlap/thresh1.ser";
         DecisionTree dt1 = DataReader.readSerializedTree(base+filename1);
         DecisionTree dt2 = DataReader.readSerializedTree(base+filename2);
         if (DecisionTree.equals(dt1,dt2)==false) {
+            checkFlag[0] = true;
             if (verbose)
                 System.out.println("Passed test 1.");
         }
         else {
+            checkFlag[0] = false;
             if (verbose)
                 System.out.println("Failed test 1.");
             pass = false;}
@@ -31,9 +35,11 @@ public class Tester {
         DecisionTree dt12 = DataReader.readSerializedTree(base+filename12);
         DecisionTree dt22 = DataReader.readSerializedTree(base+filename22);
         if (DecisionTree.equals(dt12,dt22)==true){
+            checkFlag[1] = true;
             if (verbose)
                 System.out.println("Passed test 2.");}
         else{
+            checkFlag[1] = false;
             if(verbose)
                 System.out.println("Failed test 2.");
             pass = false;}
@@ -43,11 +49,12 @@ public class Tester {
         DecisionTree dt13 = DataReader.readSerializedTree(base+filename13);
         DecisionTree dt23 = DataReader.readSerializedTree(base+filename23);
         if (DecisionTree.equals(dt13,dt23)==true) {
+            checkFlag[2] = true;
             if (verbose)
                 System.out.println("Passed test 3.");
         }
         else{
-
+            checkFlag[2] = false;
             if (verbose)
                 System.out.println("Failed test 3.");
             pass = false;}
@@ -56,10 +63,12 @@ public class Tester {
         DecisionTree dt14 = DataReader.readSerializedTree(base+filename14);
         DecisionTree dt24 = DataReader.readSerializedTree(base+filename24);
         if (DecisionTree.equals(dt14,dt24)==true) {
+            checkFlag[3] = true;
             if (verbose)
                 System.out.println("Passed test 4.");
         }
         else{
+            checkFlag[3] = false;
             if (verbose)
                 System.out.println("Failed test 4.");
             pass = false;}
@@ -68,9 +77,11 @@ public class Tester {
         DecisionTree dt15 = DataReader.readSerializedTree(base+filename15);
         DecisionTree dt25 = DataReader.readSerializedTree(base+filename25);
         if (DecisionTree.equals(dt15,dt25)==false){
+            checkFlag[4] = true;
             if (verbose)
                 System.out.println("Passed test 5.");}
         else{
+            checkFlag[4] = false;
             if (verbose)
                 System.out.println("Failed test 5.");
             pass = false;
@@ -81,9 +92,11 @@ public class Tester {
         DecisionTree dt26 = DataReader.readSerializedTree(base+filename26);
         if (DecisionTree.equals(dt16,dt26)==true)
         {
+            checkFlag[5] = true;
             if (verbose)
                 System.out.println("Passed test 6.");}
         else{
+            checkFlag[5] = false;
             if (verbose)
                 System.out.println("Failed test 6.");
             pass = false;}
@@ -130,13 +143,13 @@ public class Tester {
                     //create a decision tree based on the dataset
                     DecisionTree dt = new DecisionTree(dr.trainData , j);
                         //read corresponding serialized tree
-                    	DecisionTree serdt = DataReader.readSerializedTree(filename);
-                        
+                        DecisionTree serdt = DataReader.readSerializedTree(filename);
+
                         //compare the two trees
                         testpass = DecisionTree.equals(serdt,dt);
-                        
                     if (testpass)
                     {
+                        counter++;
                         if (verbose)
                             System.out.println(datasets[i] + " - thresh" +j+ "  - Result : "+"Passed");
                     }
@@ -144,7 +157,7 @@ public class Tester {
                     {
                         if (verbose)
                             System.out.println(datasets[i] + " - thresh" +j+ "  - Result : "+"Failed");
-                        counter++;
+
                     }
                 }catch(Exception e)
                 {
@@ -154,7 +167,7 @@ public class Tester {
             }
 
         }
-        System.out.println("Number of tests passed :" + (total-counter) + " out of "+total+" tests." );
+        System.out.println("Number of tests passed :" + (counter) + " out of "+total+" tests." );
     }
      //if you want a more detailed test result change verbose to true
     public static void testClassify(boolean verbose)
@@ -193,7 +206,7 @@ public class Tester {
         }
         System.out.println("Number of correct outputs : " + counter + " out of " + total);
     }
-
+    
     public static void testPerformance() {
         String datasets[] = {"data_high_overlap", "data_partial_overlap", "data_minimal_overlap"};
         for (int i = 0; i < datasets.length; i++) {
@@ -221,7 +234,7 @@ public class Tester {
             }
         }
     }
-    
+
     public static void main(String args[])
     {
 
@@ -229,9 +242,10 @@ public class Tester {
         testequals(true);
 
         //if you want a more detailed test result change verbose to 'true'
-        testDecisionTree(false);
-        testClassify(false);
+        testDecisionTree(true);
+        testClassify(true);
         testPerformance();
+
     }
 
 }
