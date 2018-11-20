@@ -3,6 +3,8 @@
  *
  * Name: Raymond Haoqin Yang
  * Completed on: 2018/03/29
+ * 
+ * Usage: First input is the number in decimal base, second input is the target base to convert to
  */
 
 #include<stdio.h>
@@ -142,7 +144,7 @@ int main(int argc, char* argv[]) {
 	}
 
 	// Two empty lines
-	Label: printf("\n\n");
+	printf("\n\n");
 
 	return 0;
 }
