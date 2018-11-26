@@ -218,6 +218,8 @@ public class DecisionTree implements Serializable {
 				if(this.label == dtree.label) {
 					// both leaf nodes have same labels
 					// proceed to check child nodes
+				} else {
+					return false;	
 				}
 			} else if (this.leaf == false && dtree.leaf == false) {
 				// if both nodes are not leaf
