@@ -16,6 +16,10 @@ public class MyHashTable<K,V> implements Iterable<HashPair<K,V>>{
     public MyHashTable(int initialCapacity) {
         // ADD YOUR CODE BELOW THIS
         
+    	this.numEntries = initialCapacity;
+    	this.numBuckets = initialCapacity;
+    	this.buckets = new ArrayList<LinkedList<HashPair<K,V>>>();
+    	
         //ADD YOUR CODE ABOVE THIS
     }
     
@@ -28,7 +32,7 @@ public class MyHashTable<K,V> implements Iterable<HashPair<K,V>>{
     }
     
     /**
-     * Returns the buckets vairable. Usefull for testing  purposes.
+     * Returns the buckets variable. Useful for testing  purposes.
      */
     public ArrayList<LinkedList< HashPair<K,V> > > getBuckets(){
         return this.buckets;
@@ -47,7 +51,20 @@ public class MyHashTable<K,V> implements Iterable<HashPair<K,V>>{
     public V put(K key, V value) {
         //  ADD YOUR CODE BELOW HERE
         
-       
+    	// call hashfunction on key, and mod with numBuckets to find corresponding bucket
+    	// iterating through entries of a bucket, usually entries for a single bucket is 0 or 1
+    	for(HashPair<K,V> item: this.buckets.get(((this.hashFunction(key)) % this.numBuckets)) ) {
+    		if ((item.getKey()).equals(key)){
+    			V oldValue = item.getValue();
+    			item.setValue(value);
+    			return oldValue;
+    		}
+    	}
+    	
+    	// no match for current key, create new HashPair<K,V> and add to bucket
+    	this.buckets.get(((this.hashFunction(key)) % this.numBuckets)).add(new HashPair<K,V>(key, value));
+    	return null;
+    	
         //  ADD YOUR CODE ABOVE HERE
     }
     
@@ -58,7 +75,16 @@ public class MyHashTable<K,V> implements Iterable<HashPair<K,V>>{
     
     public V get(K key) {
         //ADD YOUR CODE BELOW HERE
-        return null;//remove
+        
+    	for(HashPair<K,V> item: this.buckets.get( ((this.hashFunction(key)) % this.numBuckets) )) {
+    		if((item.getKey()).equals(key)) {
+    			return item.getValue();
+    		} else {
+    			return null;
+    		}
+    	}
+    	
+    	return null;
         //ADD YOUR CODE ABOVE HERE
     }
     
