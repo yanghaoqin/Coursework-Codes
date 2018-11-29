@@ -54,7 +54,8 @@ public class HashTableTester {
         System.out.println("New MyHashtable created.....");
         System.out.println("Number of songs in the table: " + songTable.size());
         System.out.println("Number of buckets in the table: " + songTable.numBuckets());
-        //System.out.println(songTable);
+        System.out.println("\n------------------------Initialization------------------------\n");
+//        System.out.println(songTable);
         
         // Try to retrieve a song
         StringBuffer errors = new StringBuffer();
@@ -62,7 +63,9 @@ public class HashTableTester {
         System.out.println(testSong0);
         if (testSong0 == null || !testSong0.getArtist().equals("Black Flag") || testSong0.getYear() != 1984) {
             errors.append("Failed to retrieve song 'Scream'.\n");
-        }   
+        } else {
+        	System.out.println("\n------------------------Passed retrieving test------------------------\n");
+        }
         
         //  rehashing changes the capacity of the table, but not the number of entries
         Integer oldBucketCount = songTable.numBuckets();
@@ -74,6 +77,8 @@ public class HashTableTester {
             errors.append("Expected bucket count = " + 2*oldBucketCount + "\n");
             errors.append("New size = " + songTable.size() + "\n" );
             errors.append("Expected size = " + oldSize + "\n");
+        } else {
+        	System.out.println("\n------------------------Passed rehashing test------------------------\n");
         }
         
         // Try to retrieve a song
@@ -81,6 +86,8 @@ public class HashTableTester {
         System.out.println(testSong1);
         if (testSong1 == null || !testSong1.getArtist().equals("Black Flag") || testSong1.getYear() != 1984) {
             errors.append("Failed to retrieve song 'Scream'.\n");
+        } else {
+        	System.out.println("\n------------------------Passed retrieving test------------------------\n");
         }
         
         // Try to remove a song
@@ -88,6 +95,8 @@ public class HashTableTester {
         Song retrievedSong = songTable.get("Fallen Angel");
         if (removedSong == null || !removedSong.getArtist().equals("King Crimson") || removedSong.getYear() != 1974 || retrievedSong != null) {
             errors.append("Failed to remove song 'Fallen Angel'.\n");
+        } else {
+        	System.out.println("\n------------------------Passed removing test------------------------\n");
         }
         
         //***************** Music Store Basic Checks *****************//
