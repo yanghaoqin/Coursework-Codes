@@ -225,20 +225,22 @@ public class MyHashTable<K,V> implements Iterable<HashPair<K,V>>{
     public ArrayList<V> values() {
         //ADD CODE BELOW HERE
     	
-    	// each entry has a value
-    	ArrayList<V> values = new ArrayList<V>();
+    	ArrayList<V> values = new ArrayList<V>();	// stores unique values
+    	MyHashTable<V,K> valuetable = new MyHashTable<V,K>(this.numBuckets);	// hash by value
     	
-    	// iterate through hash table
+    	// iterate through hash table and add values to new valuetable, sorted by value
     	for(LinkedList<HashPair<K,V>> list: this.buckets) {
     		for(HashPair<K,V> item: list) {
-    			
-    			// check for uniqueness
-    			if(values.contains(item.getValue()) == false) {
-    				// only add value if it is unique
-    				values.add((item.getValue()));		    				
-    			}
+    			valuetable.put(item.getValue(), item.getKey());
     		}
     	}
+    
+    	// iterate through valuetable and add all values (which are values but used as keys)
+	    for(LinkedList<HashPair<V,K>> list: valuetable.buckets) {
+			for(HashPair<V,K> item: list) {
+				values.add(item.getKey());
+			}
+		}
     	
     	return values;
     	
