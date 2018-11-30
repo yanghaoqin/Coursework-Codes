@@ -67,7 +67,7 @@ public class MyHashTable<K,V> implements Iterable<HashPair<K,V>>{
     		this.numEntries++;		// update num of entries
     		
     		// check current load factor and rehashing
-    		if(((double)this.numEntries)/this.numBuckets > 0.75) {
+    		if(((double)this.numEntries)/this.numBuckets > MAX_LOAD_FACTOR) {
     			rehash();							
     		}
     		
@@ -91,7 +91,7 @@ public class MyHashTable<K,V> implements Iterable<HashPair<K,V>>{
     	this.numEntries++;		// new entry in hash table
     	
     	// check current load factor and rehashing
-		if(((double)this.numEntries)/this.numBuckets > 0.75) {
+		if(((double)this.numEntries)/this.numBuckets > MAX_LOAD_FACTOR) {
 			rehash();							
 		}
     	
@@ -114,7 +114,7 @@ public class MyHashTable<K,V> implements Iterable<HashPair<K,V>>{
     	}
     	
     	// check if bucket is empty
-    	if(this.buckets.get(this.hashFunction(key)).size() == 0){
+    	if(this.buckets.get(this.hashFunction(key)).isEmpty()){
     		return null;		// nothing in bucket
     	}
     	
@@ -143,7 +143,7 @@ public class MyHashTable<K,V> implements Iterable<HashPair<K,V>>{
     	}
 
     	// check whether corresponding bucket is empty
-    	if(this.buckets.get(this.hashFunction(key)).size() == 0){
+    	if(this.buckets.get(this.hashFunction(key)).isEmpty()){
     		return null;	// bucket has no hashpairs so key not found
     	}
     	
@@ -155,10 +155,9 @@ public class MyHashTable<K,V> implements Iterable<HashPair<K,V>>{
     		
     		// if the hashpair with key is found, remove hashpair
     		if((item.getKey()).equals(key)){
-    			V oldValue = item.getValue();
     			this.buckets.get(this.hashFunction(key)).remove(index);
     			this.numEntries--;		// removed an entry
-    			return oldValue;
+    			return item.getValue();
     		}
     	}
     	
@@ -247,7 +246,6 @@ public class MyHashTable<K,V> implements Iterable<HashPair<K,V>>{
         //ADD CODE ABOVE HERE
     }
     
-    
     @Override
     public MyHashIterator iterator() {
         return new MyHashIterator();
@@ -260,6 +258,7 @@ public class MyHashTable<K,V> implements Iterable<HashPair<K,V>>{
         private MyHashIterator() {
             //ADD YOUR CODE BELOW HERE
             
+        	entries = new LinkedList<HashPair<K,V>>();
         	// iterate through hash table and add all hashpairs into entries
         	for(LinkedList<HashPair<K,V>> list: MyHashTable.this.getBuckets()) {
         		for(HashPair<K,V> item: list) {
@@ -274,12 +273,7 @@ public class MyHashTable<K,V> implements Iterable<HashPair<K,V>>{
         public boolean hasNext() {
             //ADD YOUR CODE BELOW HERE
             
-        	// use iterator for a linkedlist
-        	if(entries.iterator().hasNext()) {
-            	return true;
-            } else {
-            	return false;
-            }
+        	return (!entries.isEmpty());	// check if linked list is empty
 
         	//ADD YOUR CODE ABOVE HERE
         }
@@ -288,12 +282,8 @@ public class MyHashTable<K,V> implements Iterable<HashPair<K,V>>{
         public HashPair<K,V> next() {
             //ADD YOUR CODE BELOW HERE
         	
-            if(entries.iterator().hasNext()) {
-            	return entries.iterator().next();            	
-            } else {
-            	return null;
-            }
-            
+            return entries.remove();		// sends out the first and removes the element
+           
             //ADD YOUR CODE ABOVE HERE
         }
         
