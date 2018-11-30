@@ -62,7 +62,7 @@ public class MyHashTable<K,V> implements Iterable<HashPair<K,V>>{
     	}
     	
     	// if the corresponding bucket is empty, create new HashPair<K,V> and add it in
-    	if((this.buckets.get(this.hashFunction(key))).size() == 0) {
+    	if((this.buckets.get(this.hashFunction(key))).isEmpty()) {
     		this.buckets.get(this.hashFunction(key)).add(new HashPair<K,V>(key, value));
     		this.numEntries++;		// update num of entries
     		
@@ -209,7 +209,7 @@ public class MyHashTable<K,V> implements Iterable<HashPair<K,V>>{
     	// iterate through hash table
     	for(LinkedList<HashPair<K,V>> list: this.buckets) {
     		for(HashPair<K,V> item: list) {
-    			keys.add((item.getKey()));		// add key to arraylist
+    			keys.add(item.getKey());		// add key to arraylist
     		}
     	}
     	
@@ -233,10 +233,9 @@ public class MyHashTable<K,V> implements Iterable<HashPair<K,V>>{
     		for(HashPair<K,V> item: list) {
     			
     			// check for uniqueness
-    			if(values.contains(item.getValue())) {
-    				// do nothing since value already exists in arraylist
-    			} else {
-    				values.add((item.getValue()));		// add value to arraylist    				
+    			if(values.contains(item.getValue()) == false) {
+    				// only add value if it is unique
+    				values.add((item.getValue()));		    				
     			}
     		}
     	}
@@ -282,7 +281,7 @@ public class MyHashTable<K,V> implements Iterable<HashPair<K,V>>{
         public HashPair<K,V> next() {
             //ADD YOUR CODE BELOW HERE
         	
-            return entries.remove();		// sends out the first and removes the element
+            return entries.removeFirst();		// sends out the first and removes the element
            
             //ADD YOUR CODE ABOVE HERE
         }

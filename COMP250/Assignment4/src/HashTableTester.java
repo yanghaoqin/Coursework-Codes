@@ -13,8 +13,10 @@ public class HashTableTester {
         songs.add(new Song("Le Premier Bonheur du Jour", "Os Mutantes", 1968));
         songs.add(new Song("Stretch Out And Wait", "The Smiths", 1987));
         songs.add(new Song("Scream", "Black Flag", 1984));
+        songs.add(new Song("Scream", "Black Flag", 1984));
         songs.add(new Song("Europe, After the Rain", "Max Richter", 2002));
         songs.add(new Song("Why Are You Looking Grave?", "Mew", 2005));
+        songs.add(new Song("Fallen Angel", "King Crimson", 1974));
         songs.add(new Song("Fallen Angel", "King Crimson", 1974));
         songs.add(new Song("The Song Of Ice and Fire", "Rhaegar", 1974));
         songs.add(new Song("The Bear and The Maiden Fair", "Tom O'Sevens", 2011));
@@ -30,8 +32,11 @@ public class HashTableTester {
         songs.add(new Song("Flowers of springs", "Marillion", 2002));
         songs.add(new Song("On a Misty Morn", "Marillion", 2002));
         songs.add(new Song("Her Little Flower", "Dareon", 2001));
+        songs.add(new Song("Her Little Flower", "Dareon", 2001));
+        songs.add(new Song("Her Little Flower", "Dareon", 2001));
         songs.add(new Song("Milady's Supper", "Dareon", 2001));
         songs.add(new Song("Rat Cook", "Dareon", 2001));
+        songs.add(new Song("Ratook", "Dareon", 2001));
         songs.add(new Song("The Night that ended", "Dareon", 2001));
         songs.add(new Song("When Willum's Wife was wet", "Dareon", 2001));
         songs.add(new Song("A thousad eyes and one", "Dareon", 2001));
