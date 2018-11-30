@@ -57,7 +57,7 @@ public class MyHashTable<K,V> implements Iterable<HashPair<K,V>>{
         //  ADD YOUR CODE BELOW HERE
         
     	// check validity of input
-    	if(key == null || value == null) {
+    	if(key == null) {
     		throw new IllegalArgumentException();
     	}
     	
