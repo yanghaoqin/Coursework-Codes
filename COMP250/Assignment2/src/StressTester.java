@@ -159,12 +159,12 @@ public class StressTester {
 	
 	public static void main(String[] args) 
 	{
-//		testClone();
-//		testAddTerm();
-//		testAdd();
-//		testMultiplyTerm();
-//		testMultiply_1();
+		testClone();
+		testAddTerm();
+		testAdd();
+		testMultiplyTerm();
+		testMultiply_1();
 		testMultiply_2();
-//		testEval();
+		testEval();
 	}
 }
