@@ -16,12 +16,19 @@ public class MyHashTable<K,V> implements Iterable<HashPair<K,V>>{
     public MyHashTable(int initialCapacity) {
         // ADD YOUR CODE BELOW THIS
         
+    	int size = initialCapacity;
+    	
+    	// to avoid mod 0 exception
+    	if(size == 0) {
+    		size += 1;
+    	}
+    	
     	this.numEntries = 0;
-    	this.numBuckets = initialCapacity;
-    	this.buckets = new ArrayList<LinkedList<HashPair<K,V>>>(initialCapacity);
+    	this.numBuckets = size;
+    	this.buckets = new ArrayList<LinkedList<HashPair<K,V>>>(size);
     	
     	// populate arraylist
-    	for(int i = 0; i < initialCapacity; i++) {
+    	for(int i = 0; i < size; i++) {
     		this.buckets.add(new LinkedList<HashPair<K,V>>());
     	}
     	
