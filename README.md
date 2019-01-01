@@ -1,3 +1,3 @@
-# Coursework-Codes
-Some coding assignments and practice.
-Some Java codes require the acm.jar library to run.
+# Codes #
+Includes Java and C codes from coursework and practice. <br /><br />
+Exercises are personal Java and C projects.
